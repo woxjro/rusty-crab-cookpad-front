@@ -1,0 +1,28 @@
+.header {
+  display: flex;
+  border-style: solid;
+  border-color: gray;
+  border-width: 1px;
+  flex: 1;
+  height: 100px;
+  flex-direction: row;
+  align-items: center;
+  background-color: rgb(247, 243, 232);
+}
+
+.header .setting {
+  margin: 0px 5px;
+}
+
+.header .search-form {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  margin: 0px 0px 0px 20px;
+  height: 60%;
+}
+
+.header .search-box {
+  width: 30vw;
+  margin: 0px 5px 0px 0px;
+}
