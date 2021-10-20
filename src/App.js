@@ -1,6 +1,7 @@
 import "./styles/style.css";
 import Home from "./components/home";
 import SideBar from "./components/sidebar";
+import SideMenu from "./components/sidemenu";
 import Header from "./components/header";
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
     <div className="app">
       <Header />
       <div className="body">
+        <SideMenu />
         <Home />
         <SideBar />
       </div>
