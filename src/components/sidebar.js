@@ -1,7 +1,7 @@
 function SideBar() {
   const listItems = Array(100)
     .fill(1)
-    .map((number, i) => <RecipeLi src="" i={i} />);
+    .map((number, i) => <RecipeMini src="" i={i} />);
 
   return (
     <div className="sidebar">
@@ -11,7 +11,7 @@ function SideBar() {
   );
 }
 
-function RecipeLi(i, src) {
+function RecipeMini(i, src) {
   return (
     <div className="recipe_li" key={i}>
       <div className="img"></div>
