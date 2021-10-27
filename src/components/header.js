@@ -1,8 +1,11 @@
 import logo from "../img/cookpad_icon.png";
+import { Link } from "react-router-dom";
 function Header() {
   return (
     <div className="header">
-      <img src={logo} alt="logo" width="264" height="54" />
+      <Link to={"/"}>
+        <img src={logo} alt="logo" width="264" height="54" />
+      </Link>
       <form className="search-form">
         <input
           type="text"

@@ -1,11 +1,29 @@
+import { Switch, Route, Link, useParams } from "react-router-dom";
+
 function Home() {
   return (
     <div className="home">
       <div className="container">
-        <RecipesLegend />
-        <RecipesCategoryContainer />
-        <RecipesTag />
+        <Switch>
+          <Route path="/recipe/:recipeId">
+            <RecipeDetail />
+          </Route>
+          <Route path="/">
+            <RecipesLegend />
+            <RecipesCategoryContainer />
+            <RecipesTag />
+          </Route>
+        </Switch>
       </div>
+    </div>
+  );
+}
+
+function RecipeDetail() {
+  let { recipeId } = useParams();
+  return (
+    <div className="recipes detail">
+      <div className="container">{recipeId}</div>
     </div>
   );
 }
