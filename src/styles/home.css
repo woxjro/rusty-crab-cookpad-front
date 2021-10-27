@@ -20,3 +20,57 @@
   margin: 10px;
   flex: 1;
 }
+
+.home .container .recipe-screen {
+  background-color: white;
+  border-style: solid;
+  border-color: gray;
+  border-width: 1px;
+  margin: 10px;
+  flex: 1;
+}
+
+.recipe-screen > .container {
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  flex: 1;
+  border-style: solid;
+  border-color: gray;
+  border-width: 1px;
+}
+
+.recipe > .container {
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-body > .recipe-summary {
+  display: flex;
+  flex-direction: row;
+}
+
+.recipe-procedures-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-procedures-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.recipe-procedure {
+  background-color: white;
+  border-style: solid;
+  border-color: gray;
+  border-width: 1px;
+
+  width: 25%;
+}
