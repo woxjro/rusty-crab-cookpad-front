@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { recipe as getRecipe, users as getUsers } from "../api/Api";
-import { Switch, Route, Link, useParams } from "react-router-dom";
-import { recipes as getRecipes } from "../api/Api";
+import { Switch, Route, Link, useParams, useLocation } from "react-router-dom";
+import { recipes as getRecipes, searchRecipes } from "../api/Api";
 import store from "../redux/store";
 import Recipe from "./recipe";
+
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 
 function Home({ login_user, setLoginUser }) {
   return (
     <div className="home">
       <div className="container">
         <Switch>
+          <Route path="/recipes/search">
+            <SearchedRecipesScreen />
+          </Route>
           <Route path="/services/normal/recipes">
             <RecipesScreen />
           </Route>
@@ -35,6 +44,32 @@ function RecipesScreen() {
   useEffect(() => {
     getRecipes(setRecipes, () => {});
   }, []);
+
+  return (
+    <div className="recipe-screen">
+      <div className="container">
+        <div>
+          {recipes.map((recipe) => {
+            return (
+              <Link to={`/recipe/${recipe.id}`}>
+                <li> {recipe.title} </li>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SearchedRecipesScreen() {
+  const query = useQuery();
+  const words = query.get("words");
+  console.log(words);
+  let [recipes, setRecipes] = useState([]);
+  useEffect(() => {
+    searchRecipes(words, setRecipes, () => {});
+  }, [words]);
 
   return (
     <div className="recipe-screen">

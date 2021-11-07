@@ -1,28 +1,14 @@
+import { useState } from "react";
 import logo from "../img/cookpad_icon.png";
 import { Link } from "react-router-dom";
+import { searchRecipes } from "../api/Api";
 function Header() {
   return (
     <div className="header">
       <Link to={"/"}>
         <img src={logo} alt="logo" width="264" height="54" />
       </Link>
-      <form className="search-form">
-        <input
-          type="text"
-          name="keyword"
-          id="keyword"
-          className="search-box"
-          placeholder="料理名・食材名"
-          autocomplete="off"
-        />
-        <input
-          type="submit"
-          name="commit"
-          value="レシピ検索"
-          id="submit_button"
-          className="search-btn"
-        />
-      </form>
+      <SearchBox />
       <img
         width="30"
         height="30"
@@ -39,6 +25,33 @@ function Header() {
         />
       </Link>
     </div>
+  );
+}
+
+function SearchBox() {
+  const [searchWord, setSearchWord] = useState("");
+  return (
+    <form className="search-form" action="/recipes/search" onSubmit={() => {}}>
+      <input
+        type="text"
+        name="words"
+        id="words"
+        value={searchWord}
+        onChange={(e) => {
+          let words = e.target.value.replace("　", " ");
+          setSearchWord(words);
+        }}
+        className="search-box"
+        placeholder="料理名・食材名"
+        autocomplete="off"
+      />
+      <input
+        type="submit"
+        value="レシピ検索"
+        id="submit_button"
+        className="search-btn"
+      />
+    </form>
   );
 }
 

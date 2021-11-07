@@ -23,3 +23,9 @@ export const users = (successFunc, failedFunc) => {
     .then((res) => res.json())
     .then((data) => successFunc(data));
 };
+
+export const searchRecipes = (words, successFunc, failedFunc) => {
+  fetch(`${API_URL}/recipe/search?words=${words}`)
+    .then((res) => res.json())
+    .then((data) => successFunc(data));
+};
