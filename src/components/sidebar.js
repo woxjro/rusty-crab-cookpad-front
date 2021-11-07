@@ -7,6 +7,7 @@ function SideBar({ login_user }) {
   let [recipes, setRecipes] = useState([]);
   useEffect(() => {
     if (!!login_user) {
+      console.log(login_user);
       browsing_history(login_user.id, setRecipes, () => {});
     }
   }, [login_user]);

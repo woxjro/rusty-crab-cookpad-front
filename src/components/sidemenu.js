@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function SideMenu() {
   return (
     <div className="sidemenu">
@@ -65,18 +67,20 @@ function Searvices() {
       <ul>
         {searvices_list.map((searvice, idx) => {
           return (
-            <li key={idx}>
-              <svg
-                width="20"
-                height="20"
-                fill="currentColor"
-                viewBox="0 0 64 64"
-                className={searvice.svg.className}
-              >
-                {searvice.svg.path}
-              </svg>
-              {searvice.title}
-            </li>
+            <Link to={"/services/normal/recipes"}>
+              <li key={idx}>
+                <svg
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  viewBox="0 0 64 64"
+                  className={searvice.svg.className}
+                >
+                  {searvice.svg.path}
+                </svg>
+                {searvice.title}
+              </li>
+            </Link>
           );
         })}
       </ul>

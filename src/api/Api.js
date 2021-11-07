@@ -6,6 +6,12 @@ export const recipe = (recipe_id, user_id, successFunc, failedFunc) => {
     .then((data) => successFunc(data));
 };
 
+export const recipes = (successFunc, failedFunc) => {
+  fetch(`${API_URL}/recipe`)
+    .then((res) => res.json())
+    .then((data) => successFunc(data));
+};
+
 export const browsing_history = (user_id, successFunc, failedFunc) => {
   fetch(`${API_URL}/user/browsed_recipes/${user_id}`)
     .then((res) => res.json())

@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { recipe as getRecipe, users as getUsers } from "../api/Api";
 import { Switch, Route, Link, useParams } from "react-router-dom";
+import { recipes as getRecipes } from "../api/Api";
 import store from "../redux/store";
 import Recipe from "./recipe";
 
-function Home({ setLoginUser }) {
+function Home({ login_user, setLoginUser }) {
   return (
     <div className="home">
       <div className="container">
         <Switch>
+          <Route path="/services/normal/recipes">
+            <RecipesScreen />
+          </Route>
           <Route path="/user/setting">
             <UserSettingScreen setLoginUser={setLoginUser} />
           </Route>
           <Route path="/recipe/:recipeId">
-            <RecipeScreen />
+            <RecipeScreen login_user={login_user} />
           </Route>
           <Route path="/">
             <RecipesLegend />
@@ -21,6 +25,29 @@ function Home({ setLoginUser }) {
             <RecipesTag />
           </Route>
         </Switch>
+      </div>
+    </div>
+  );
+}
+
+function RecipesScreen() {
+  let [recipes, setRecipes] = useState([]);
+  useEffect(() => {
+    getRecipes(setRecipes, () => {});
+  }, []);
+
+  return (
+    <div className="recipe-screen">
+      <div className="container">
+        <div>
+          {recipes.map((recipe) => {
+            return (
+              <Link to={`/recipe/${recipe.id}`}>
+                <li> {recipe.title} </li>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -57,7 +84,7 @@ function UserSettingScreen({ setLoginUser }) {
   );
 }
 
-function RecipeScreen() {
+function RecipeScreen({ login_user }) {
   let { recipeId } = useParams();
   let _recipe = {
     id: recipeId,
@@ -67,10 +94,11 @@ function RecipeScreen() {
     ingredients: Array(10).fill(1),
   };
 
-  let [recipe, setRecipe] = useState(_recipe);
+  const [recipe, setRecipe] = useState(_recipe);
   useEffect(() => {
-    getRecipe(recipeId, 1, setRecipe, () => {});
-  }, [recipeId]);
+    console.log("called");
+    getRecipe(recipeId, login_user.id, setRecipe, () => {});
+  }, [login_user, recipeId]);
 
   return (
     <div className="recipe-screen">

@@ -17,7 +17,7 @@ function App() {
           <Header />
           <div className="body">
             <SideMenu />
-            <Home setLoginUser={setLoginUser} />
+            <Home setLoginUser={setLoginUser} login_user={login_user} />
             <SideBar login_user={login_user} />
           </div>
         </div>
