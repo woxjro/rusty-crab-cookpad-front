@@ -29,13 +29,15 @@ function Header() {
         src="https://assets.cpcdn.com/assets/global/icon_service_menu_myfolder@2x.png?28b04d7b1ed2c6ceffd67cf6504e3367f4d533545079d5ec8ea182bc6242c01c"
         alt="folder"
       />
-      <img
-        className="setting"
-        alt="setting"
-        width="25"
-        height="25"
-        src="https://assets.cpcdn.com/assets/global/header_config.png?f63fccfc568cc03db8b0d45072cf9b6550df024e4ef8c36cefbcb0fa3626bc0c"
-      />
+      <Link to={"/user/setting"}>
+        <img
+          className="setting"
+          alt="setting"
+          width="25"
+          height="25"
+          src="https://assets.cpcdn.com/assets/global/header_config.png?f63fccfc568cc03db8b0d45072cf9b6550df024e4ef8c36cefbcb0fa3626bc0c"
+        />
+      </Link>
     </div>
   );
 }
