@@ -1,11 +1,17 @@
+import React, { useState, useEffect } from "react";
+import { recipe as getRecipe, users as getUsers } from "../api/Api";
 import { Switch, Route, Link, useParams } from "react-router-dom";
+import store from "../redux/store";
 import Recipe from "./recipe";
 
-function Home() {
+function Home({ setLoginUser }) {
   return (
     <div className="home">
       <div className="container">
         <Switch>
+          <Route path="/user/setting">
+            <UserSettingScreen setLoginUser={setLoginUser} />
+          </Route>
           <Route path="/recipe/:recipeId">
             <RecipeScreen />
           </Route>
@@ -20,15 +26,52 @@ function Home() {
   );
 }
 
+function UserSettingScreen({ setLoginUser }) {
+  let [users, setUsers] = useState([]);
+  useEffect(() => {
+    getUsers(setUsers, () => {});
+  }, []);
+  return (
+    <div className="user-setting-screen">
+      <div className="container">
+        <div>
+          {users.map((user) => {
+            return (
+              <label>
+                <input
+                  type="radio"
+                  name="users"
+                  value={user.id}
+                  onChange={(_) => {
+                    setLoginUser(user);
+                    store.dispatch({ type: "login_user", payload: user });
+                  }}
+                />
+                {user.name}
+              </label>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function RecipeScreen() {
   let { recipeId } = useParams();
-  let recipe = {
-    recipeId: recipeId,
-    title: "title",
-    discription: "discription",
+  let _recipe = {
+    id: recipeId,
+    title: "",
+    discription: "",
     procedures: Array(10).fill(1),
     ingredients: Array(10).fill(1),
   };
+
+  let [recipe, setRecipe] = useState(_recipe);
+  useEffect(() => {
+    getRecipe(recipeId, 1, setRecipe, () => {});
+  }, [recipeId]);
+
   return (
     <div className="recipe-screen">
       <div className="container">

@@ -1,5 +1,6 @@
+import React, { useState, useEffect } from "react";
 function Recipe({ recipe }) {
-  const { recipeId, title, discription, ingredients, procedures } = recipe;
+  const { id, title, discription, ingredients, procedures } = recipe;
   let procedures_grouped = [];
   for (let index = 0; index < procedures.length; index += 4) {
     procedures_grouped.push(procedures.slice(index, index + 4));
@@ -9,7 +10,7 @@ function Recipe({ recipe }) {
     <div className="recipe">
       <div className="container">
         <div className="recipe-header">
-          <div>{title + recipeId}</div>
+          <div>{`No.${id} ${title}`}</div>
         </div>
         <div className="recipe-body">
           <div className="recipe-summary">
@@ -20,12 +21,14 @@ function Recipe({ recipe }) {
             </div>
             <div className="left">
               <div className="recipe-discription">{discription}</div>
-              <div className="recipe-ingredients">
-                材料・分量
-                {
-                  //ingredients list
-                }
-              </div>
+              <div className="recipe-ingredients">材料・分量</div>
+              {ingredients.map((ingredient) => {
+                return (
+                  <div>
+                    {ingredient.name}・{ingredient.amount}
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className="recipe-procedures">
@@ -39,6 +42,7 @@ function Recipe({ recipe }) {
                       return (
                         <div className="recipe-procedure">
                           <img width="150" height="200" />
+                          <p>{e.discription}</p>
                         </div>
                       );
                     })}

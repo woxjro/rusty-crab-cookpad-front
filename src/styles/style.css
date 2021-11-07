@@ -16,7 +16,7 @@
 
 .sidebar {
   height: 93vh;
-  flex: 1;
+  flex: 1.5;
   display: flex;
   flex-direction: column;
   overflow: scroll;
@@ -28,7 +28,7 @@
 
 .sidemenu {
   height: 93vh;
-  flex: 1;
+  flex: 1.5;
   display: flex;
   flex-direction: column;
 }
