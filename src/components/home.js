@@ -138,7 +138,7 @@ function RecipeScreen({ login_user }) {
   return (
     <div className="recipe-screen">
       <div className="container">
-        <Recipe recipe={recipe} />
+        <Recipe recipe={recipe} loginUser={login_user} />
       </div>
     </div>
   );

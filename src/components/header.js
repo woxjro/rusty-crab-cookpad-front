@@ -45,12 +45,11 @@ function SearchBox() {
         placeholder="料理名・食材名"
         autocomplete="off"
       />
-      <input
-        type="submit"
-        value="レシピ検索"
-        id="submit_button"
-        className="search-btn"
-      />
+      <Link to={`/recipes/search/?words=${searchWord}`}>
+        <button type="button" className="search-btn" id="submit_button">
+          レシピ検索
+        </button>
+      </Link>
     </form>
   );
 }

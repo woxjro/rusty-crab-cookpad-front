@@ -29,3 +29,30 @@ export const searchRecipes = (words, successFunc, failedFunc) => {
     .then((res) => res.json())
     .then((data) => successFunc(data));
 };
+
+export const whetherRecipeLike = (
+  user_id,
+  recipe_id,
+  successFunc,
+  failedFunc
+) => {
+  fetch(`${API_URL}/user/whether_like_recipe/${user_id}/${recipe_id}`)
+    .then((res) => res.json())
+    .then((data) => successFunc(data));
+};
+
+export const likeRecipe = (user_id, recipe_id, successFunc, failedFunc) => {
+  fetch(`${API_URL}/recipe/${recipe_id}/is_liked_by/${user_id}`, {
+    method: "POST",
+  })
+    .then((res) => res.json())
+    .then((data) => successFunc(data));
+};
+
+export const unlikeRecipe = (recipe_id, user_id, successFunc, failedFunc) => {
+  fetch(`${API_URL}/recipe/${recipe_id}/is_unliked_by/${user_id}`, {
+    method: "POST",
+  })
+    .then((res) => res.json())
+    .then((data) => successFunc(data));
+};

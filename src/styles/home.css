@@ -30,6 +30,11 @@
   flex: 1;
 }
 
+.recipe-header {
+  display: flex;
+  flex-direction: row;
+}
+
 .recipe-screen > .container {
   display: flex;
   flex-direction: column;
