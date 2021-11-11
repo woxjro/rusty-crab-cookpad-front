@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { recipe as getRecipe, users as getUsers } from "../api/Api";
 import { Switch, Route, Link, useParams, useLocation } from "react-router-dom";
-import { recipes as getRecipes, searchRecipes } from "../api/Api";
+import { createRecipe, recipes as getRecipes, searchRecipes } from "../api/Api";
 import store from "../redux/store";
 import Recipe from "./recipe";
 
@@ -192,12 +192,19 @@ function CreateRecipeScreen({ loginUser }) {
                   return !!procedure.discription;
                 })
                 .map((procedure, i) => {
-                  return { number: i, discription: procedure.discription };
+                  return { number: i + 1, discription: procedure.discription };
                 });
               let nextNewRecipe = { ...newRecipe };
               nextNewRecipe.procedures = procedures;
               nextNewRecipe.ingredients = ingredients;
-              setNewRecipe(nextNewRecipe);
+
+              if (nextNewRecipe.title && nextNewRecipe.discription) {
+                createRecipe(
+                  nextNewRecipe,
+                  () => setNewRecipe(nextNewRecipe),
+                  () => {}
+                );
+              }
             }}
           >
             {"レシピ作成完了"}

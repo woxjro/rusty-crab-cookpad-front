@@ -56,3 +56,15 @@ export const unlikeRecipe = (recipe_id, user_id, successFunc, failedFunc) => {
     .then((res) => res.json())
     .then((data) => successFunc(data));
 };
+
+export const createRecipe = (recipe, successFunc, failedFunc) => {
+  fetch(`${API_URL}/recipe/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(recipe),
+  })
+    .then((res) => res.json())
+    .then((data) => successFunc(data));
+};
