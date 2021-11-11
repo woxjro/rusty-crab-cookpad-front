@@ -7,6 +7,8 @@ import {
   searchRecipes,
   likedRecipes as getLikedRecipes,
   createdRecipes as getCreatedRecipes,
+  tags as getTags,
+  categories as getCategories,
 } from "../api/Api";
 import store from "../redux/store";
 import Recipe from "./recipe";
@@ -75,6 +77,8 @@ function CreateRecipeScreen({ loginUser }) {
   let [createdRecipes, setCreatedRecipes] = useState([]);
   let [likedRecipes, setLikedRecipes] = useState([]);
   let [refresh, setRefresh] = useState(0);
+  let [tags, setTags] = useState([]);
+  let [categories, setCategories] = useState([]);
   useEffect(() => {
     console.log("called");
     getLikedRecipes(
@@ -94,6 +98,9 @@ function CreateRecipeScreen({ loginUser }) {
       },
       () => {}
     );
+
+    getTags(setTags, () => {});
+    getCategories(setCategories, () => {});
   }, [loginUser, refresh]);
 
   return (
@@ -257,6 +264,7 @@ function CreateRecipeScreen({ loginUser }) {
                 i={i}
                 key={`mini-recipe-${i}`}
                 recipe={recipe}
+                loginUser={loginUser}
               />
             );
           })}
@@ -344,24 +352,52 @@ function UserSettingScreen({ setLoginUser }) {
   useEffect(() => {
     getUsers(setUsers, () => {});
   }, []);
+  console.log(users);
   return (
     <div className="user-setting-screen">
       <div className="container">
-        <div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
           {users.map((user, idx) => {
             return (
-              <label key={`user-${idx}`}>
-                <input
-                  type="radio"
-                  name="users"
-                  value={user.id}
-                  onChange={(_) => {
-                    setLoginUser(user);
-                    store.dispatch({ type: "login_user", payload: user });
+              <div key={`user-${idx}`} style={{ marginBottom: "20px" }}>
+                <label>
+                  <input
+                    type="radio"
+                    name="users"
+                    value={user.id}
+                    onChange={(_) => {
+                      setLoginUser(user);
+                      store.dispatch({ type: "login_user", payload: user });
+                    }}
+                  />
+                  {user.name}
+                </label>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    flexWrap: "wrap",
                   }}
-                />
-                {user.name}
-              </label>
+                >
+                  {user.user_type_with_authorities.authorities.map(
+                    (authority) => {
+                      return (
+                        <div
+                          style={{
+                            marginRight: "10px",
+                            backgroundColor: "#c7f9cc",
+                            padding: "5px",
+                            borderRadius: "15px",
+                            marginBottom: "5px",
+                          }}
+                        >
+                          {"✓" + authority.name}
+                        </div>
+                      );
+                    }
+                  )}
+                </div>
+              </div>
             );
           })}
         </div>

@@ -35,6 +35,18 @@ export const recipes = (successFunc, failedFunc) => {
     .then((data) => successFunc(data));
 };
 
+export const tags = (successFunc, failedFunc) => {
+  fetch(`${API_URL}/tag`)
+    .then((res) => res.json())
+    .then((data) => successFunc(data));
+};
+
+export const categories = (successFunc, failedFunc) => {
+  fetch(`${API_URL}/category`)
+    .then((res) => res.json())
+    .then((data) => successFunc(data));
+};
+
 export const browsing_history = (user_id, successFunc, failedFunc) => {
   fetch(`${API_URL}/user/browsed_recipes/${user_id}`)
     .then((res) => res.json())
@@ -87,6 +99,14 @@ export const createRecipe = (recipe, successFunc, failedFunc) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(recipe),
+  })
+    .then((res) => res.json())
+    .then((data) => successFunc(data));
+};
+
+export const deleteRecipe = (recipe_id, user_id, successFunc, failedFunc) => {
+  fetch(`${API_URL}/recipe/delete/${recipe_id}/by/${user_id}`, {
+    method: "POST",
   })
     .then((res) => res.json())
     .then((data) => successFunc(data));
