@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { whetherRecipeLike, likeRecipe, unlikeRecipe } from "../api/Api";
 function Recipe({ recipe, loginUser }) {
-  const { id, title, discription, ingredients, procedures } = recipe;
+  console.log(recipe);
+  const { id, title, discription, ingredients, procedures, tags, categories } =
+    recipe;
   let procedures_grouped = [];
   for (let index = 0; index < procedures.length; index += 4) {
     procedures_grouped.push(procedures.slice(index, index + 4));
@@ -39,7 +41,7 @@ function Recipe({ recipe, loginUser }) {
     <div className="recipe">
       <div className="container">
         <div className="recipe-header">
-          <div>{`No.${id} ${title}`}</div>
+          <div className="recipe-title">{`No.${id} ${title}`}</div>
           <div>
             {love ? (
               <AiFillHeart
@@ -70,15 +72,33 @@ function Recipe({ recipe, loginUser }) {
             </div>
             <div className="left">
               <div className="recipe-discription">{discription}</div>
-              <div className="recipe-ingredients">材料・分量</div>
-              {ingredients.map((ingredient) => {
-                return (
-                  <div>
-                    {ingredient.name}・{ingredient.amount}
-                  </div>
-                );
-              })}
+              <div className="recipe-ingredients">
+                <table>
+                  <tr>
+                    <th>材料</th>
+                    <th>分量</th>
+                  </tr>
+                  {ingredients.map((ingredient) => {
+                    return (
+                      <tr>
+                        <td> {ingredient.name}</td>
+                        <td> {ingredient.amount}</td>
+                      </tr>
+                    );
+                  })}
+                </table>
+              </div>
             </div>
+          </div>
+          <div className="recipe-tags">
+            {tags?.map((tag) => {
+              return <div className="tag">{`#${tag.name}`}</div>;
+            })}
+          </div>
+          <div className="recipe-categories">
+            {categories?.map((category) => {
+              return <div className="category">{`#${category.name}`}</div>;
+            })}
           </div>
           <div className="recipe-procedures">
             <p>作り方</p>

@@ -9,16 +9,18 @@ import SideMenu from "./components/sidemenu";
 import Header from "./components/header";
 
 function App() {
-  const [login_user, setLoginUser] = useState({});
+  const [loginUser, setLoginUser] = useState({});
   return (
     <Provider store={store}>
       <Router>
         <div className="app">
-          <Header />
+          <Header loginUser={loginUser} />
           <div className="body">
             <SideMenu />
-            <Home setLoginUser={setLoginUser} login_user={login_user} />
-            <SideBar login_user={login_user} />
+            <Home setLoginUser={setLoginUser} login_user={loginUser} />
+            {!!Object.keys(loginUser).length ? (
+              <SideBar login_user={loginUser} />
+            ) : null}
           </div>
         </div>
       </Router>

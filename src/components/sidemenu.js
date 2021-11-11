@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 function SideMenu() {
   return (
     <div className="sidemenu">
-      <Searvices />
-      <PremiumSearvices />
+      <Services />
+      <PremiumServices />
     </div>
   );
 }
 
-function Searvices() {
-  const searvices_list = [
+function Services() {
+  const services_list = [
     {
       title: "みんなのレシピ",
       svg: {
@@ -65,10 +65,10 @@ function Searvices() {
     <div className="searvices-container">
       <div>レシピ関連サービス</div>
       <ul>
-        {searvices_list.map((searvice, idx) => {
+        {services_list.map((searvice, idx) => {
           return (
-            <Link to={"/services/normal/recipes"}>
-              <li key={idx}>
+            <Link to={"/services/normal/recipes"} key={`service-${idx}`}>
+              <li>
                 <svg
                   width="20"
                   height="20"
@@ -88,8 +88,8 @@ function Searvices() {
   );
 }
 
-function PremiumSearvices() {
-  const searvices_list = [
+function PremiumServices() {
+  const services_list = [
     {
       title: "人気順検索",
       svg: {
@@ -143,7 +143,7 @@ function PremiumSearvices() {
     <div className="premium searvices-container">
       <div>プレミアムサービス</div>
       <ul>
-        {searvices_list.map((searvice, idx) => {
+        {services_list.map((searvice, idx) => {
           return (
             <li key={idx}>
               <svg

@@ -1,7 +1,30 @@
 const API_URL = "http://127.0.0.1:8000/api";
 
 export const recipe = (recipe_id, user_id, successFunc, failedFunc) => {
-  fetch(`${API_URL}/recipe/${recipe_id}/by/${user_id}`)
+  const URL = user_id
+    ? `${API_URL}/recipe/${recipe_id}/by/${user_id}`
+    : `${API_URL}/recipe/${recipe_id}`;
+  fetch(URL)
+    .then((res) => res.json())
+    .then((data) => successFunc(data));
+};
+
+export const likedRecipes = (user_id, successFunc, failedFunc) => {
+  fetch(`${API_URL}/user/liked_recipes/${user_id}`)
+    .then((res) => res.json())
+    .then((data) => successFunc(data));
+};
+
+export const createdRecipes = (
+  user_id,
+  category_id,
+  tag_id,
+  successFunc,
+  failedFunc
+) => {
+  fetch(
+    `${API_URL}/recipe/query?user_id=${user_id}&category_id=${category_id}&tag_id=${tag_id}`
+  )
     .then((res) => res.json())
     .then((data) => successFunc(data));
 };
@@ -41,7 +64,7 @@ export const whetherRecipeLike = (
     .then((data) => successFunc(data));
 };
 
-export const likeRecipe = (user_id, recipe_id, successFunc, failedFunc) => {
+export const likeRecipe = (recipe_id, user_id, successFunc, failedFunc) => {
   fetch(`${API_URL}/recipe/${recipe_id}/is_liked_by/${user_id}`, {
     method: "POST",
   })

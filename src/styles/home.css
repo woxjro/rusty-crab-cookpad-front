@@ -101,4 +101,17 @@
 .new-recipe-container {
   display: flex;
   flex-direction: column;
+  margin-bottom: 30px;
+}
+
+.liked-recipes-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+
+.created-recipes-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
 }

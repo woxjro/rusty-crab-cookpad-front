@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 import { browsing_history } from "../api/Api";
-import store from "../redux/store";
-import recipe1 from "../image/recipe1.png";
 function SideBar({ login_user }) {
   let [recipes, setRecipes] = useState([]);
   useEffect(() => {
@@ -25,7 +22,7 @@ function SideBar({ login_user }) {
   );
 }
 
-function RecipeMini({ recipe, i }) {
+export function RecipeMini({ recipe, i }) {
   return (
     <div className="recipe_li" key={i}>
       <Link to={`/recipe/${recipe.id}`}>

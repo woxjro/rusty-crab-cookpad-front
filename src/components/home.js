@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { recipe as getRecipe, users as getUsers } from "../api/Api";
 import { Switch, Route, Link, useParams, useLocation } from "react-router-dom";
-import { createRecipe, recipes as getRecipes, searchRecipes } from "../api/Api";
+import {
+  createRecipe,
+  recipes as getRecipes,
+  searchRecipes,
+  likedRecipes as getLikedRecipes,
+  createdRecipes as getCreatedRecipes,
+} from "../api/Api";
 import store from "../redux/store";
 import Recipe from "./recipe";
+import { RecipeMini } from "./sidebar";
 
 function useQuery() {
   const { search } = useLocation();
@@ -65,12 +72,37 @@ function CreateRecipeScreen({ loginUser }) {
   };
 
   let [newRecipe, setNewRecipe] = useState(_newRecipe);
-  useEffect(() => {}, []);
+  let [createdRecipes, setCreatedRecipes] = useState([]);
+  let [likedRecipes, setLikedRecipes] = useState([]);
+  let [refresh, setRefresh] = useState(0);
+  useEffect(() => {
+    console.log("called");
+    getLikedRecipes(
+      loginUser.id,
+      (data) => {
+        setLikedRecipes(data);
+      },
+      () => {}
+    );
+    getCreatedRecipes(
+      loginUser.id,
+      null,
+      null,
+      (data) => {
+        console.log(data);
+        setCreatedRecipes(data);
+      },
+      () => {}
+    );
+  }, [loginUser, refresh]);
 
   return (
     <div className="recipe-screen">
       <div className="container">
         <div className="new-recipe-container">
+          <div style={{ display: "flex", flex: 1, justifyContent: "center" }}>
+            {"新規レシピ作成"}
+          </div>
           <input
             type="text"
             name="title"
@@ -201,7 +233,10 @@ function CreateRecipeScreen({ loginUser }) {
               if (nextNewRecipe.title && nextNewRecipe.discription) {
                 createRecipe(
                   nextNewRecipe,
-                  () => setNewRecipe(nextNewRecipe),
+                  () => {
+                    setNewRecipe(nextNewRecipe);
+                    setRefresh(refresh + 1);
+                  },
                   () => {}
                 );
               }
@@ -210,6 +245,46 @@ function CreateRecipeScreen({ loginUser }) {
             {"レシピ作成完了"}
           </button>
         </div>
+
+        <div className="created-recipes-container">
+          <div style={{ display: "flex", flex: 1, justifyContent: "center" }}>
+            {"作成したレシピ"}
+          </div>
+          {createdRecipes.map((recipe, i) => {
+            return (
+              <RecipeMini
+                src=""
+                i={i}
+                key={`mini-recipe-${i}`}
+                recipe={recipe}
+              />
+            );
+          })}
+        </div>
+
+        <div className="liked-recipes-container">
+          <div style={{ display: "flex", flex: 1, justifyContent: "center" }}>
+            {"いいねしたレシピ"}
+          </div>
+          {likedRecipes.map((recipe, i) => {
+            return (
+              <RecipeMini
+                src=""
+                i={i}
+                key={`mini-recipe-${i}`}
+                recipe={recipe}
+              />
+            );
+          })}
+        </div>
+
+        <button
+          onClick={() => {
+            setRefresh(refresh + 1);
+          }}
+        >
+          {"更新"}
+        </button>
       </div>
     </div>
   );
@@ -273,9 +348,9 @@ function UserSettingScreen({ setLoginUser }) {
     <div className="user-setting-screen">
       <div className="container">
         <div>
-          {users.map((user) => {
+          {users.map((user, idx) => {
             return (
-              <label>
+              <label key={`user-${idx}`}>
                 <input
                   type="radio"
                   name="users"
