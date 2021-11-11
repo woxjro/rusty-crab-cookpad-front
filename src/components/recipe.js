@@ -56,7 +56,16 @@ function Recipe({ recipe, loginUser }) {
           <div className="recipe-summary">
             <div className="right">
               <div className="recipe-icon">
-                <img width="300px" height="400px" />
+                <img
+                  width="300px"
+                  height="auto"
+                  src={
+                    recipe.thumbnail_path
+                      ? require(`../image/${recipe.thumbnail_path}.png`).default
+                      : require(`../image/noimage.png`).default
+                  }
+                  alt="icon"
+                />
               </div>
             </div>
             <div className="left">

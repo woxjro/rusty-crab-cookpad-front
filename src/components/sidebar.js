@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { browsing_history } from "../api/Api";
 import store from "../redux/store";
+import recipe1 from "../image/recipe1.png";
 function SideBar({ login_user }) {
   let [recipes, setRecipes] = useState([]);
   useEffect(() => {
@@ -28,7 +29,18 @@ function RecipeMini({ recipe, i }) {
   return (
     <div className="recipe_li" key={i}>
       <Link to={`/recipe/${recipe.id}`}>
-        <div className="img"></div>
+        <div className="img">
+          <img
+            width="70px"
+            height="70px"
+            src={
+              recipe.thumbnail_path
+                ? require(`../image/${recipe.thumbnail_path}.png`).default
+                : require(`../image/noimage.png`).default
+            }
+            alt="mini-icon"
+          />
+        </div>
         <div className="discription">{recipe.title}</div>
       </Link>
     </div>

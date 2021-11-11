@@ -93,3 +93,12 @@
 
   width: 25%;
 }
+.new-recipe-box {
+  width: 30vw;
+  margin: 0px 5px 0px 0px;
+}
+
+.new-recipe-container {
+  display: flex;
+  flex-direction: column;
+}

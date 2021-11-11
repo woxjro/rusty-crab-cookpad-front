@@ -25,6 +25,10 @@ function Home({ login_user, setLoginUser }) {
           <Route path="/user/setting">
             <UserSettingScreen setLoginUser={setLoginUser} />
           </Route>
+          <Route path="/user/create_recipe">
+            <CreateRecipeScreen loginUser={login_user} />
+          </Route>
+
           <Route path="/recipe/:recipeId">
             <RecipeScreen login_user={login_user} />
           </Route>
@@ -34,6 +38,171 @@ function Home({ login_user, setLoginUser }) {
             <RecipesTag />
           </Route>
         </Switch>
+      </div>
+    </div>
+  );
+}
+
+function CreateRecipeScreen({ loginUser }) {
+  let _ingredient = {
+    name: "",
+    amount: "",
+  };
+  let _procedure = {
+    number: null,
+    discription: "",
+    image_path: null,
+  };
+  let _newRecipe = {
+    user_id: loginUser.id,
+    title: "",
+    thumbnail_path: null,
+    discription: "",
+    ingredients: [_ingredient],
+    procedures: [_procedure],
+    tags: [],
+    categories: [],
+  };
+
+  let [newRecipe, setNewRecipe] = useState(_newRecipe);
+  useEffect(() => {}, []);
+
+  return (
+    <div className="recipe-screen">
+      <div className="container">
+        <div className="new-recipe-container">
+          <input
+            type="text"
+            name="title"
+            id="title"
+            value={newRecipe.title}
+            onChange={(e) => {
+              let title = e.target.value;
+              setNewRecipe({ ...newRecipe, title });
+            }}
+            className="new-recipe-box"
+            placeholder="タイトル"
+            autocomplete="off"
+          />
+          <input
+            type="text"
+            name="discription"
+            id="discription"
+            value={newRecipe.discription}
+            onChange={(e) => {
+              let discription = e.target.value;
+              setNewRecipe({ ...newRecipe, discription });
+            }}
+            className="new-recipe-box"
+            placeholder="レシピ説明"
+            autocomplete="off"
+          />
+          {newRecipe.ingredients.map((ingrediient, i) => {
+            return (
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <div>{i + 1}</div>
+                <input
+                  type="text"
+                  name={`ingredient-name-${i}`}
+                  id={`ingredient-name-${i}`}
+                  value={ingrediient.name}
+                  onChange={(e) => {
+                    let name = e.target.value;
+                    let ingredients = newRecipe.ingredients.slice();
+                    ingredients[i].name = name;
+                    setNewRecipe({ ...newRecipe, ingredients });
+                  }}
+                  className="new-recipe-box"
+                  placeholder="材料名"
+                  autocomplete="off"
+                />
+                <input
+                  type="text"
+                  name={`ingredient-amount-${i}`}
+                  id={`ingredient-amount-${i}`}
+                  value={ingrediient.amount}
+                  onChange={(e) => {
+                    let amount = e.target.value;
+                    let ingredients = newRecipe.ingredients.slice();
+                    ingredients[i].amount = amount;
+                    setNewRecipe({ ...newRecipe, ingredients });
+                  }}
+                  className="new-recipe-box"
+                  placeholder="量"
+                  autocomplete="off"
+                />
+              </div>
+            );
+          })}
+
+          <button
+            onClick={() => {
+              let ingredients = newRecipe.ingredients.slice();
+              ingredients.push(_ingredient);
+              setNewRecipe({ ...newRecipe, ingredients });
+            }}
+          >
+            {"+ 材料・量"}
+          </button>
+
+          {newRecipe.procedures.map((procedure, i) => {
+            //set number
+            return (
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <div>{i + 1}</div>
+                <input
+                  type="text"
+                  name={`procedure-discription-${i}`}
+                  id={`procedure-discription-${i}`}
+                  value={procedure.discription}
+                  onChange={(e) => {
+                    let discription = e.target.value;
+                    let procedures = newRecipe.procedures.slice();
+                    procedures[i].discription = discription;
+                    setNewRecipe({ ...newRecipe, procedures });
+                  }}
+                  className="new-recipe-box"
+                  placeholder="説明"
+                  autocomplete="off"
+                />
+              </div>
+            );
+          })}
+
+          <button
+            onClick={() => {
+              let procedures = newRecipe.procedures.slice();
+              procedures.push(_procedure);
+              setNewRecipe({ ...newRecipe, procedures });
+            }}
+          >
+            {"+ 手順手順"}
+          </button>
+
+          <button
+            onClick={() => {
+              let ingredients = newRecipe.ingredients
+                .slice()
+                .filter((ingredient) => {
+                  return !!ingredient.amount && !!ingredient.name;
+                });
+              let procedures = newRecipe.procedures
+                .slice()
+                .filter((procedure) => {
+                  return !!procedure.discription;
+                })
+                .map((procedure, i) => {
+                  return { number: i, discription: procedure.discription };
+                });
+              let nextNewRecipe = { ...newRecipe };
+              nextNewRecipe.procedures = procedures;
+              nextNewRecipe.ingredients = ingredients;
+              setNewRecipe(nextNewRecipe);
+            }}
+          >
+            {"レシピ作成完了"}
+          </button>
+        </div>
       </div>
     </div>
   );
