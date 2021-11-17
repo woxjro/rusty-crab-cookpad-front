@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { browsing_history, deleteRecipe } from "../api/Api";
 import { MdDelete } from "react-icons/md";
+import { BiEditAlt } from "react-icons/bi";
 function SideBar({ login_user }) {
   let [recipes, setRecipes] = useState([]);
   useEffect(() => {
@@ -42,21 +43,26 @@ export function RecipeMini({ recipe, i, loginUser }) {
         <div className="discription">{recipe.title}</div>
       </Link>
       {loginUser ? (
-        <MdDelete
-          size={25}
-          onClick={() => {
-            deleteRecipe(
-              recipe.id,
-              loginUser.id,
-              (res) => {
-                console.log(res);
-              },
-              (err) => {
-                console.log(err);
-              }
-            );
-          }}
-        />
+        <>
+          <Link to={`/recipe/edit/${recipe.id}`}>
+            <BiEditAlt size={30} onClick={() => {}} />
+          </Link>
+          <MdDelete
+            size={30}
+            onClick={() => {
+              deleteRecipe(
+                recipe.id,
+                loginUser.id,
+                (res) => {
+                  console.log(res);
+                },
+                (err) => {
+                  console.log(err);
+                }
+              );
+            }}
+          />
+        </>
       ) : null}
     </div>
   );

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { recipe as getRecipe, users as getUsers } from "../api/Api";
 import { Switch, Route, Link, useParams, useLocation } from "react-router-dom";
 import {
+  recipe as getRecipe,
+  users as getUsers,
   createRecipe,
   recipes as getRecipes,
   searchRecipes,
@@ -36,6 +37,10 @@ function Home({ login_user, setLoginUser }) {
           </Route>
           <Route path="/user/create_recipe">
             <CreateRecipeScreen loginUser={login_user} />
+          </Route>
+
+          <Route path="/recipe/edit/:recipeId">
+            <RecipeEditScreen loginUser={login_user} />
           </Route>
 
           <Route path="/recipe/:recipeId">
@@ -79,6 +84,7 @@ function CreateRecipeScreen({ loginUser }) {
   let [refresh, setRefresh] = useState(0);
   let [tags, setTags] = useState([]);
   let [categories, setCategories] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
   useEffect(() => {
     console.log("called");
     getLikedRecipes(
@@ -218,6 +224,39 @@ function CreateRecipeScreen({ loginUser }) {
             {"+ 手順手順"}
           </button>
 
+          <div>
+            {selectedImage && (
+              <div>
+                <img
+                  alt="not fount"
+                  width={"250px"}
+                  src={URL.createObjectURL(selectedImage)}
+                />
+                <br />
+                <button
+                  onClick={() => {
+                    console.log(URL.createObjectURL(selectedImage));
+                    setSelectedImage(null);
+                  }}
+                >
+                  Remove
+                </button>
+              </div>
+            )}
+            <br />
+
+            <br />
+            <input
+              type="file"
+              name="myImage"
+              accept="image/*"
+              onChange={(event) => {
+                console.log(event.target.files[0]);
+                setSelectedImage(event.target.files[0]);
+              }}
+            />
+          </div>
+
           <button
             onClick={() => {
               let ingredients = newRecipe.ingredients
@@ -315,6 +354,224 @@ function RecipesScreen() {
               </Link>
             );
           })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RecipeEditScreen({ loginUser }) {
+  let { recipeId } = useParams();
+  let _ingredient = {
+    name: "",
+    amount: "",
+  };
+  let _procedure = {
+    number: null,
+    discription: "",
+    image_path: null,
+  };
+  let _newRecipe = {
+    user_id: loginUser.id,
+    title: "",
+    thumbnail_path: null,
+    discription: "",
+    ingredients: [_ingredient],
+    procedures: [_procedure],
+    tags: [],
+    categories: [],
+  };
+
+  let [newRecipe, setNewRecipe] = useState(_newRecipe);
+  let [refresh, setRefresh] = useState(0);
+  let [tags, setTags] = useState([]);
+  let [categories, setCategories] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  useEffect(() => {
+    getRecipe(recipeId, loginUser.id, setNewRecipe, () => {});
+  }, [loginUser, refresh]);
+
+  return (
+    <div className="recipe-screen">
+      <div className="container">
+        <div className="new-recipe-container">
+          <div style={{ display: "flex", flex: 1, justifyContent: "center" }}>
+            {"レシピ編集"}
+          </div>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            value={newRecipe.title}
+            onChange={(e) => {
+              let title = e.target.value;
+              setNewRecipe({ ...newRecipe, title });
+            }}
+            className="new-recipe-box"
+            placeholder="タイトル"
+            autocomplete="off"
+          />
+          <input
+            type="text"
+            name="discription"
+            id="discription"
+            value={newRecipe.discription}
+            onChange={(e) => {
+              let discription = e.target.value;
+              setNewRecipe({ ...newRecipe, discription });
+            }}
+            className="new-recipe-box"
+            placeholder="レシピ説明"
+            autocomplete="off"
+          />
+          {newRecipe.ingredients.map((ingrediient, i) => {
+            return (
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <div>{i + 1}</div>
+                <input
+                  type="text"
+                  name={`ingredient-name-${i}`}
+                  id={`ingredient-name-${i}`}
+                  value={ingrediient.name}
+                  onChange={(e) => {
+                    let name = e.target.value;
+                    let ingredients = newRecipe.ingredients.slice();
+                    ingredients[i].name = name;
+                    setNewRecipe({ ...newRecipe, ingredients });
+                  }}
+                  className="new-recipe-box"
+                  placeholder="材料名"
+                  autocomplete="off"
+                />
+                <input
+                  type="text"
+                  name={`ingredient-amount-${i}`}
+                  id={`ingredient-amount-${i}`}
+                  value={ingrediient.amount}
+                  onChange={(e) => {
+                    let amount = e.target.value;
+                    let ingredients = newRecipe.ingredients.slice();
+                    ingredients[i].amount = amount;
+                    setNewRecipe({ ...newRecipe, ingredients });
+                  }}
+                  className="new-recipe-box"
+                  placeholder="量"
+                  autocomplete="off"
+                />
+              </div>
+            );
+          })}
+
+          <button
+            onClick={() => {
+              let ingredients = newRecipe.ingredients.slice();
+              ingredients.push(_ingredient);
+              setNewRecipe({ ...newRecipe, ingredients });
+            }}
+          >
+            {"+ 材料・量"}
+          </button>
+
+          {newRecipe.procedures.map((procedure, i) => {
+            //set number
+            return (
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <div>{i + 1}</div>
+                <input
+                  type="text"
+                  name={`procedure-discription-${i}`}
+                  id={`procedure-discription-${i}`}
+                  value={procedure.discription}
+                  onChange={(e) => {
+                    let discription = e.target.value;
+                    let procedures = newRecipe.procedures.slice();
+                    procedures[i].discription = discription;
+                    setNewRecipe({ ...newRecipe, procedures });
+                  }}
+                  className="new-recipe-box"
+                  placeholder="説明"
+                  autocomplete="off"
+                />
+              </div>
+            );
+          })}
+
+          <button
+            onClick={() => {
+              let procedures = newRecipe.procedures.slice();
+              procedures.push(_procedure);
+              setNewRecipe({ ...newRecipe, procedures });
+            }}
+          >
+            {"+ 手順手順"}
+          </button>
+
+          <div>
+            {selectedImage && (
+              <div>
+                <img
+                  alt="not fount"
+                  width={"250px"}
+                  src={URL.createObjectURL(selectedImage)}
+                />
+                <br />
+                <button
+                  onClick={() => {
+                    console.log(URL.createObjectURL(selectedImage));
+                    setSelectedImage(null);
+                  }}
+                >
+                  Remove
+                </button>
+              </div>
+            )}
+            <br />
+
+            <br />
+            <input
+              type="file"
+              name="myImage"
+              accept="image/*"
+              onChange={(event) => {
+                console.log(event.target.files[0]);
+                setSelectedImage(event.target.files[0]);
+              }}
+            />
+          </div>
+
+          <button
+            onClick={() => {
+              let ingredients = newRecipe.ingredients
+                .slice()
+                .filter((ingredient) => {
+                  return !!ingredient.amount && !!ingredient.name;
+                });
+              let procedures = newRecipe.procedures
+                .slice()
+                .filter((procedure) => {
+                  return !!procedure.discription;
+                })
+                .map((procedure, i) => {
+                  return { number: i + 1, discription: procedure.discription };
+                });
+              let nextNewRecipe = { ...newRecipe };
+              nextNewRecipe.procedures = procedures;
+              nextNewRecipe.ingredients = ingredients;
+
+              if (nextNewRecipe.title && nextNewRecipe.discription) {
+                createRecipe(
+                  nextNewRecipe,
+                  () => {
+                    setNewRecipe(nextNewRecipe);
+                    setRefresh(refresh + 1);
+                  },
+                  () => {}
+                );
+              }
+            }}
+          >
+            {"レシピ編集完了"}
+          </button>
         </div>
       </div>
     </div>
