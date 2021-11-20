@@ -4,6 +4,7 @@ import {
   recipe as getRecipe,
   users as getUsers,
   createRecipe,
+  updateRecipe,
   recipes as getRecipes,
   searchRecipes,
   likedRecipes as getLikedRecipes,
@@ -388,7 +389,23 @@ function RecipeEditScreen({ loginUser }) {
   let [categories, setCategories] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   useEffect(() => {
-    getRecipe(recipeId, loginUser.id, setNewRecipe, () => {});
+    getRecipe(
+      recipeId,
+      loginUser.id,
+      (recipe) => {
+        delete recipe.created_at;
+        delete recipe.updated_at;
+        recipe.tags = recipe.tags.slice().map((tag) => {
+          return tag.id;
+        });
+        recipe.categories = recipe.categories.slice().map((category) => {
+          return category.id;
+        });
+        console.log(recipe);
+        setNewRecipe(recipe);
+      },
+      () => {}
+    );
   }, [loginUser, refresh]);
 
   return (
@@ -559,7 +576,8 @@ function RecipeEditScreen({ loginUser }) {
               nextNewRecipe.ingredients = ingredients;
 
               if (nextNewRecipe.title && nextNewRecipe.discription) {
-                createRecipe(
+                console.log("[updateRecipe]:", nextNewRecipe);
+                updateRecipe(
                   nextNewRecipe,
                   () => {
                     setNewRecipe(nextNewRecipe);

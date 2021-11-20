@@ -104,6 +104,18 @@ export const createRecipe = (recipe, successFunc, failedFunc) => {
     .then((data) => successFunc(data));
 };
 
+export const updateRecipe = (recipe, successFunc, failedFunc) => {
+  fetch(`${API_URL}/recipe/update`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(recipe),
+  })
+    .then((res) => res.json())
+    .then((data) => successFunc(data));
+};
+
 export const deleteRecipe = (recipe_id, user_id, successFunc, failedFunc) => {
   fetch(`${API_URL}/recipe/delete/${recipe_id}/by/${user_id}`, {
     method: "POST",
