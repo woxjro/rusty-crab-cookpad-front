@@ -1,11 +1,11 @@
 import { useState } from "react";
-import logo from "../img/cookpad_icon.png";
+import logo from "../img/rusty_crab_cookpad_icon.png";
 import { Link } from "react-router-dom";
 function Header({ loginUser }) {
   return (
     <div className="header">
       <Link to={"/"}>
-        <img src={logo} alt="logo" width="264" height="54" />
+        <img src={logo} alt="logo" width="auto" height="62" />
       </Link>
       <SearchBox />
       {loginUser.id ? (
