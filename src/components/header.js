@@ -1,5 +1,5 @@
 import { useState } from "react";
-import logo from "../img/rusty_crab_cookpad_icon.png";
+import logo from "../image/rusty_crab_cookpad_icon.png";
 import { Link } from "react-router-dom";
 function Header({ loginUser }) {
   return (
